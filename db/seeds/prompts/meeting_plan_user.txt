@@ -1,0 +1,14 @@
+Generate a Consultation Plan for the following meeting.
+
+Meeting topic: {{topic}}
+
+What is being decided: {{decision_paragraph}}
+
+Duration: {{duration_minutes}} minutes
+
+Participants:
+{{participants_list}}
+
+Additional context (recent history, prior attempts, sensitivities): {{context}}
+
+Produce the JSON object now.

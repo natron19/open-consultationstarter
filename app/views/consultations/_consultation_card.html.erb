@@ -1,0 +1,26 @@
+<div class="col">
+  <%= link_to consultation_path(consultation), class: "text-decoration-none" do %>
+    <div class="card h-100 bg-dark border-secondary">
+      <div class="card-body">
+        <h6 class="card-title text-white fw-semibold mb-1">
+          <%= consultation.topic %>
+        </h6>
+        <p class="text-muted small mb-2">
+          <% if consultation.scheduled_for %>
+            <%= consultation.scheduled_for.strftime("%b %-d, %Y at %-I:%M %p") %>
+          <% else %>
+            Not scheduled
+          <% end %>
+        </p>
+        <p class="text-muted small mb-3">
+          <%= pluralize(consultation.participants.size, "participant") %>
+        </p>
+        <% if consultation.consultation_plan.present? %>
+          <span class="badge bg-success">Plan generated</span>
+        <% else %>
+          <span class="badge bg-secondary">Awaiting plan</span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,57 @@
+<div class="row g-4">
+  <%# Main column %>
+  <div class="col-lg-8">
+    <div class="mb-4">
+      <h1 class="display-6 fw-bold mb-1"><%= @consultation.topic %></h1>
+      <p class="text-muted small mb-2">
+        <% if @consultation.scheduled_for %>
+          <%= @consultation.scheduled_for.strftime("%B %-d, %Y at %-I:%M %p") %> &middot;
+        <% end %>
+        <%= @consultation.duration_minutes %> min &middot;
+        <%= pluralize(@consultation.participants.size, "participant") %>
+      </p>
+      <div class="d-flex gap-2">
+        <%= link_to "Edit", edit_consultation_path(@consultation), class: "btn btn-sm btn-outline-secondary" %>
+        <%= button_to "Delete", consultation_path(@consultation), method: :delete,
+            class: "btn btn-sm btn-outline-danger",
+            data: { turbo_confirm: "Delete this consultation and its plan?" } %>
+        <button class="btn btn-sm btn-outline-secondary d-lg-none ms-auto"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#principles-offcanvas">
+          View Principles
+        </button>
+      </div>
+    </div>
+
+    <% if @plan && @consultation.updated_at > @plan.created_at %>
+      <div class="alert alert-info small mb-3">
+        Inputs updated since this plan was generated — consider regenerating.
+      </div>
+    <% end %>
+
+    <%= turbo_frame_tag "plan-region", data: { controller: "plan-generate" } do %>
+      <% if @plan %>
+        <%= render "consultation_plans/plan", plan: @plan, consultation: @consultation %>
+      <% else %>
+        <%= render "no_plan_cta", consultation: @consultation %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%# Desktop sidebar %>
+  <div class="col-lg-4 d-none d-lg-block">
+    <%= render "shared/seven_principles_sidebar", consultation: @consultation %>
+  </div>
+</div>
+
+<%# Mobile offcanvas sidebar %>
+<div class="offcanvas offcanvas-end d-lg-none bg-dark" tabindex="-1" id="principles-offcanvas">
+  <div class="offcanvas-header border-bottom border-secondary">
+    <h6 class="offcanvas-title">Seven Principles</h6>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <%= render "shared/seven_principles_sidebar", consultation: @consultation %>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<%# Receives: raw_response (String), consultation (Consultation) %>
+<div class="alert alert-warning mb-3">
+  <strong>Unexpected response format.</strong>
+  The plan was generated but Gemini returned output that could not be parsed as JSON.
+  The raw response is shown below — you can try again or check the admin panel.
+</div>
+
+<div class="mb-3">
+  <%= button_to "Try Again",
+      consultation_plan_path(consultation),
+      method: :post,
+      class: "btn btn-primary",
+      data: { turbo_submits_with: "Generating..." } %>
+</div>
+
+<div class="card bg-dark border-secondary">
+  <div class="card-body">
+    <pre class="text-muted small mb-0" style="white-space: pre-wrap;"><%= raw_response %></pre>
+  </div>
+</div>

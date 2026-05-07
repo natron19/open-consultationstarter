@@ -1,0 +1,56 @@
+<div class="container py-5">
+  <%# Hero %>
+  <div class="row justify-content-center text-center mb-5">
+    <div class="col-lg-8">
+      <h1 class="display-5 fw-bold mb-3">
+        <%= ENV.fetch("APP_NAME", "Open Demo Starter") %>
+      </h1>
+      <p class="lead mb-3">
+        <%= ENV.fetch("APP_TAGLINE", "") %>
+      </p>
+      <p class="text-muted mb-4">
+        <%= ENV.fetch("APP_DESCRIPTION", "") %>
+      </p>
+      <% if signed_in? %>
+        <%= link_to "Plan Your Next Decision", new_consultation_path, class: "btn btn-primary btn-lg" %>
+      <% else %>
+        <%= link_to "Get Started — It's Free", sign_up_path, class: "btn btn-primary btn-lg me-2" %>
+        <%= link_to "Sign In", sign_in_path, class: "btn btn-outline-secondary btn-lg" %>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Features row %>
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-4">
+      <div class="card h-100 plan-section-card bg-dark border-secondary">
+        <div class="card-body">
+          <h6 class="fw-semibold mb-2">Purpose &amp; Success Criteria</h6>
+          <p class="text-muted small mb-0">
+            A one-sentence, decision-shaped purpose statement the group can commit to before discussion starts, plus three observable success markers to use at close.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 plan-section-card bg-dark border-secondary">
+        <div class="card-body">
+          <h6 class="fw-semibold mb-2">Pre-Meeting Questions</h6>
+          <p class="text-muted small mb-0">
+            Three to five anonymous questions mapped to the Seven Principles — sent to participants before the meeting so honest input is captured before bias sets in.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 plan-section-card bg-dark border-secondary">
+        <div class="card-body">
+          <h6 class="fw-semibold mb-2">Facilitator Prompts &amp; Decision Record</h6>
+          <p class="text-muted small mb-0">
+            Five in-session prompts — one per principle — for the facilitator to use when the conversation needs intervention, plus a decision record template ready to copy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

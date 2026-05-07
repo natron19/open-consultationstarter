@@ -1,0 +1,92 @@
+<%= form_with model: consultation do |form| %>
+  <% if consultation.errors.any? %>
+    <div class="alert alert-danger mb-4">
+      <ul class="mb-0">
+        <% consultation.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :topic, "Meeting Topic", class: "form-label" %>
+    <%= form.text_field :topic, class: "form-control",
+        placeholder: "E.g. Decide Q2 hiring plan" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :decision_paragraph, "What Is Being Decided", class: "form-label" %>
+    <div class="form-text mb-1">One paragraph describing the actual decision the group needs to make.</div>
+    <%= form.text_area :decision_paragraph, rows: 4, class: "form-control",
+        placeholder: "We need to decide whether to…" %>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <%= form.label :duration_minutes, "Duration (minutes)", class: "form-label" %>
+      <%= form.number_field :duration_minutes, class: "form-control", min: 5, max: 240,
+          value: consultation.duration_minutes || 60 %>
+    </div>
+    <div class="col-md-8">
+      <%= form.label :scheduled_for, "Scheduled For (optional)", class: "form-label" %>
+      <%= form.datetime_local_field :scheduled_for, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :context, "Additional Context (optional)", class: "form-label" %>
+    <div class="form-text mb-1">Recent history, prior attempts, known sensitivities. Do not paste real names, personnel issues, or legal matters into this demo.</div>
+    <%= form.text_area :context, rows: 3, class: "form-control",
+        placeholder: "Last quarter we tried X and it stalled because…" %>
+  </div>
+
+  <div class="mb-4" data-controller="participants">
+    <label class="form-label fw-semibold">Participants</label>
+    <div class="form-text mb-2">First name or pseudonym only. At least one participant required.</div>
+
+    <template data-participants-target="template">
+      <div class="row g-2 mb-2 participant-row" data-participants-target="row">
+        <div class="col-5">
+          <input type="text"
+                 name="consultation[participants_attributes][PARTICIPANT_INDEX][name]"
+                 placeholder="First name or pseudonym"
+                 class="form-control form-control-sm">
+        </div>
+        <div class="col-5">
+          <input type="text"
+                 name="consultation[participants_attributes][PARTICIPANT_INDEX][role]"
+                 placeholder="Role in the room"
+                 class="form-control form-control-sm">
+        </div>
+        <div class="col-2">
+          <button type="button" class="btn btn-sm btn-outline-danger w-100"
+                  data-action="click->participants#removeParticipant">
+            Remove
+          </button>
+        </div>
+      </div>
+    </template>
+
+    <div data-participants-target="container">
+      <%= form.fields_for :participants do |pf| %>
+        <%= render "participant_fields", form: pf %>
+      <% end %>
+    </div>
+
+    <button type="button" class="btn btn-sm btn-outline-secondary mt-1"
+            data-action="click->participants#addParticipant">
+      + Add Participant
+    </button>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= form.submit(consultation.persisted? ? "Update Consultation" : "Save and Continue",
+        class: "btn btn-primary") %>
+    <% if consultation.persisted? %>
+      <%= link_to "Cancel", consultation_path(consultation), class: "btn btn-outline-secondary" %>
+    <% else %>
+      <%= link_to "Cancel", consultations_path, class: "btn btn-outline-secondary" %>
+    <% end %>
+  </div>
+<% end %>

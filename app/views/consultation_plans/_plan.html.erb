@@ -1,0 +1,114 @@
+<%# Receives: plan, consultation %>
+
+<%# Purpose statement %>
+<div class="card bg-dark border-secondary plan-section-card mb-3">
+  <div class="card-body">
+    <h6 class="text-muted text-uppercase small mb-2">Purpose Statement</h6>
+    <p class="fs-5 mb-0"><%= plan.purpose_statement %></p>
+  </div>
+</div>
+
+<%# Success criteria %>
+<div class="card bg-dark border-secondary plan-section-card mb-3">
+  <div class="card-body">
+    <h6 class="text-muted text-uppercase small mb-2">Success Criteria</h6>
+    <% if plan.success_criteria_array.any? %>
+      <ol class="mb-0">
+        <% plan.success_criteria_array.each do |criterion| %>
+          <li><%= criterion %></li>
+        <% end %>
+      </ol>
+    <% else %>
+      <p class="text-muted small mb-0">Could not parse success criteria.</p>
+    <% end %>
+  </div>
+</div>
+
+<%# Pre-meeting questions %>
+<div class="card bg-dark border-secondary plan-section-card mb-3">
+  <div class="card-body">
+    <h6 class="text-muted text-uppercase small mb-2">Pre-Meeting Questions</h6>
+    <% if plan.pre_meeting_questions_array.any? %>
+      <ul class="list-unstyled mb-0">
+        <% plan.pre_meeting_questions_array.each do |q| %>
+          <li class="mb-2 d-flex justify-content-between align-items-start gap-3">
+            <span><%= q["question"] %></span>
+            <span class="badge principle-badge flex-shrink-0"><%= q["principle"] %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted small mb-0">Could not parse pre-meeting questions.</p>
+    <% end %>
+  </div>
+</div>
+
+<%# Facilitator prompts %>
+<div class="card bg-dark border-secondary plan-section-card mb-3">
+  <div class="card-body">
+    <h6 class="text-muted text-uppercase small mb-2">Facilitator Prompts</h6>
+    <p class="text-muted small fst-italic mb-3">
+      AI-suggested facilitation language. Read each prompt before using it. Substitute your own when the AI's wording does not fit your group's relationships, history, or culture.
+    </p>
+    <% if plan.facilitator_prompts_array.any? %>
+      <ol class="mb-0">
+        <% plan.facilitator_prompts_array.each do |fp| %>
+          <li class="mb-3">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-1">
+              <span class="fw-medium"><%= fp["prompt"] %></span>
+              <span class="badge principle-badge flex-shrink-0"><%= fp["principle"] %></span>
+            </div>
+            <p class="text-muted small mb-0"><em><%= fp["when_to_use"] %></em></p>
+          </li>
+        <% end %>
+      </ol>
+    <% else %>
+      <p class="text-muted small mb-0">Could not parse facilitator prompts.</p>
+    <% end %>
+  </div>
+</div>
+
+<%# Decision record template %>
+<div class="card bg-dark border-secondary plan-section-card mb-3"
+     data-controller="clipboard">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="text-muted text-uppercase small mb-0">Decision Record Template</h6>
+      <button class="btn btn-sm btn-outline-secondary"
+              data-action="click->clipboard#copy"
+              data-clipboard-target="button">
+        Copy to clipboard
+      </button>
+    </div>
+    <p class="text-muted small fst-italic mb-2">
+      This template is a starting structure for the meeting note-taker. Edit freely to fit your group.
+    </p>
+    <pre class="text-muted small mb-0"
+         data-clipboard-target="source"
+         style="white-space: pre-wrap;"><%= plan.decision_record_template %></pre>
+  </div>
+</div>
+
+<%# Plan footer %>
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <button class="btn btn-sm btn-link text-muted p-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#raw-response-collapse">
+    Show raw Gemini response
+  </button>
+  <%= button_to "Regenerate Plan",
+      consultation_plan_path(consultation),
+      method: :post,
+      class: "btn btn-sm btn-outline-secondary",
+      data: { turbo_confirm: "Regenerate this plan? The current plan will be replaced." },
+      form: { data: { action: "turbo:submit-start->plan-generate#showLoading" } } %>
+</div>
+
+<div class="collapse" id="raw-response-collapse">
+  <div class="card bg-dark border-secondary">
+    <div class="card-body">
+      <pre class="text-muted small mb-0" style="white-space: pre-wrap; overflow-x: auto;"><%= plan.gemini_raw %></pre>
+    </div>
+  </div>
+</div>

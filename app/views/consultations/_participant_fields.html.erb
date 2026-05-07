@@ -1,0 +1,18 @@
+<div class="row g-2 mb-2 participant-row" data-participants-target="row">
+  <div class="col-5">
+    <%= form.text_field :name, placeholder: "First name or pseudonym",
+        class: "form-control form-control-sm" %>
+  </div>
+  <div class="col-5">
+    <%= form.text_field :role, placeholder: "Role in the room",
+        class: "form-control form-control-sm" %>
+  </div>
+  <div class="col-2">
+    <button type="button" class="btn btn-sm btn-outline-danger w-100"
+            data-action="click->participants#removeParticipant">
+      Remove
+    </button>
+  </div>
+  <%= form.hidden_field :id %>
+  <%= form.hidden_field :_destroy, value: false, class: "destroy-field" %>
+</div>

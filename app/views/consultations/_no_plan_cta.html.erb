@@ -1,0 +1,15 @@
+<%# Receives: consultation %>
+<div class="card bg-dark border-secondary plan-section-card">
+  <div class="card-body text-center py-5">
+    <h5 class="mb-2">Generate Your Consultation Plan</h5>
+    <p class="text-muted mb-4">
+      Click below to generate a purpose statement, success criteria, pre-meeting questions,
+      facilitator prompts, and a decision record template — all structured around the Seven Principles.
+    </p>
+    <%= button_to "Generate Plan",
+        consultation_plan_path(consultation),
+        method: :post,
+        class: "btn btn-primary",
+        form: { data: { action: "turbo:submit-start->plan-generate#showLoading" } } %>
+  </div>
+</div>

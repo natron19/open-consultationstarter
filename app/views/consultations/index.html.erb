@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">My Consultations</h1>
+  <%= link_to "New Consultation", new_consultation_path, class: "btn btn-primary" %>
+</div>
+
+<div class="mb-4">
+  <%= link_to "Most recent", consultations_path,
+      class: "btn btn-sm #{params[:sort].blank? ? 'btn-secondary' : 'btn-outline-secondary'} me-1" %>
+  <%= link_to "Scheduled soonest", consultations_path(sort: "soonest"),
+      class: "btn btn-sm #{params[:sort] == 'soonest' ? 'btn-secondary' : 'btn-outline-secondary'}" %>
+</div>
+
+<% if @consultations.any? %>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <% @consultations.each do |consultation| %>
+      <%= render "consultation_card", consultation: consultation %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center py-5">
+      <h5 class="mb-3">No consultations yet</h5>
+      <p class="text-muted mb-4">Plan your first decision-making meeting in under two minutes.</p>
+      <%= link_to "New Consultation", new_consultation_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

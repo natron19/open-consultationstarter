@@ -1,0 +1,43 @@
+<%# Receives: consultation %>
+<div class="card bg-dark border-secondary"
+     data-controller="principles-checklist"
+     data-principles-checklist-consultation-id-value="<%= consultation.id %>">
+  <div class="card-header fw-semibold small text-uppercase text-muted">
+    Use during the meeting
+  </div>
+  <div class="card-body p-3">
+    <ul class="list-unstyled mb-2 principle-checklist">
+      <%
+        principles = [
+          { name: "Spirit of Service",              desc: "Each participant enters to advance the collective purpose, not their own position." },
+          { name: "Unity of Purpose",               desc: "The meeting question is explicit, shared, and revisited when discussion drifts." },
+          { name: "Detachment from Personal Views", desc: "Ideas are evaluated on merit, not on who proposed them." },
+          { name: "Frankness with Courtesy",        desc: "Dissent is welcomed; honesty is delivered to make it easier for others to be honest." },
+          { name: "Equality of Voice",              desc: "Every participant with relevant perspective has meaningful opportunity to shape the outcome." },
+          { name: "Search for Truth",               desc: "Decisions are based on evidence, including evidence that contradicts what the group prefers." },
+          { name: "Unity in Action",                desc: "After the decision, the group implements together regardless of each person's prior position." }
+        ]
+      %>
+      <% principles.each_with_index do |p, i| %>
+        <li class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="principle-<%= consultation.id %>-<%= i %>"
+                   data-principles-checklist-target="checkbox"
+                   data-action="change->principles-checklist#save"
+                   data-principle-index="<%= i %>">
+            <label class="form-check-label fw-semibold small"
+                   for="principle-<%= consultation.id %>-<%= i %>">
+              <%= p[:name] %>
+            </label>
+          </div>
+          <p class="text-muted small mb-0 ms-4"><%= p[:desc] %></p>
+        </li>
+      <% end %>
+    </ul>
+    <p class="text-muted mb-0" style="font-size: 0.7rem;">
+      Checkboxes are saved in your browser only.
+    </p>
+  </div>
+</div>
