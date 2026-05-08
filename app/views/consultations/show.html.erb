@@ -15,6 +15,11 @@
         <%= button_to "Delete", consultation_path(@consultation), method: :delete,
             class: "btn btn-sm btn-outline-danger",
             data: { turbo_confirm: "Delete this consultation and its plan?" } %>
+        <% if @plan %>
+          <%= link_to "Download .md", download_consultation_path(@consultation),
+              class: "btn btn-sm btn-outline-secondary",
+              data: { turbo: false } %>
+        <% end %>
         <button class="btn btn-sm btn-outline-secondary d-lg-none ms-auto"
                 type="button"
                 data-bs-toggle="offcanvas"

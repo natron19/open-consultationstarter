@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   resources :consultations do
     resource :plan, controller: "consultation_plans", only: [:create, :destroy]
+    get :download, on: :member
   end
 
   get "/up/llm", to: "health#llm", as: :health_llm
