@@ -1,0 +1,15 @@
+# Per-app guardrail configuration, read by AiGuardConfig.
+# See docs/ai-guardrails.md (Layer 1b: AiOutputGuard) and docs/ai-evals.md.
+
+# Meeting planning for workplace decisions; personal distress is out of scope.
+crisis_terms: []
+
+# consultationstarter_meeting_plan_v1: ConsultationPlansController parses the JSON
+# and ConsultationPlan validates presence of all five sections, so a response
+# missing any of them cannot be saved.
+templates:
+  health_ping:
+    format: text
+  consultationstarter_meeting_plan_v1:
+    format: json
+    required_keys: [purpose_statement, success_criteria, pre_meeting_questions, facilitator_prompts, decision_record_template]
